@@ -166,11 +166,20 @@ export default function Sobre() {
       />
 
       <section
-        className={`relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center gap-16 px-6 py-24 transition-opacity duration-700 md:px-10 ${
+        className={`relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col justify-center gap-16 px-6 py-24 transition-opacity duration-[1800ms] ease-out md:px-10 ${
           bgReady ? "opacity-100" : "opacity-0"
         }`}
       >
-        <div className="max-w-4xl">
+        <div
+          className={`max-w-4xl transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            bgReady
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+          style={{
+            transitionDelay: "250ms",
+          }}
+        >
           <h1 className="mb-10 text-5xl font-bold tracking-tight text-white md:text-8xl">
             SOBRE
           </h1>
@@ -181,7 +190,14 @@ export default function Sobre() {
         </div>
 
         <div className="flex flex-col gap-10 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-xl">
+          <div
+            className={`max-w-xl transition-opacity duration-[2600ms] ease-out ${
+              bgReady ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              transitionDelay: "650ms",
+            }}
+          >
             <h2 className="text-3xl font-bold text-white md:text-5xl">
               Depoimentos
             </h2>
@@ -196,9 +212,16 @@ export default function Sobre() {
 
         <Link
           href="/access"
-          className="group inline-flex w-fit items-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-300 hover:opacity-80 md:text-base"
+          className={`group inline-flex w-fit items-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-white transition-all duration-[2200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:opacity-80 md:text-base ${
+            bgReady
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+          style={{
+            transitionDelay: "1050ms",
+          }}
         >
-          <span className="transition-transform duration-300 group-hover:-translate-x-2">
+          <span className="transition-transform duration-500 group-hover:-translate-x-2">
             ←
           </span>
 

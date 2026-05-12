@@ -23,12 +23,12 @@ export function PortfolioSpotifyCard() {
             </svg>
           </div>
 
-          <h2 className="text-5xl font-semibold tracking-tight text-white">
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight text-white">
             Spotify
           </h2>
         </div>
 
-        <p className="mb-6 text-2xl font-light leading-snug tracking-wide text-white/85">
+        <p className="mb-6 text-xl md:text-2xl font-light leading-snug tracking-wide text-white/85">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, browse your
           library, and control playback.
         </p>

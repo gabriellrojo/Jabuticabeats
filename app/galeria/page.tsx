@@ -24,9 +24,9 @@ export default function Galeria() {
   const ready = bgReady && imagesLoaded >= totalPriorityImages
 
   return (
-    <main className="relative flex min-h-screen w-screen flex-col items-center justify-center overflow-hidden bg-black">
+    <main className="relative min-h-screen w-screen overflow-hidden bg-black">
       <ParticleWave
-        className="fixed inset-0"
+        className="fixed inset-0 h-screen w-screen"
         onReady={() => setBgReady(true)}
       />
 
@@ -64,12 +64,41 @@ export default function Galeria() {
         }
       `}</style>
 
-      <div
-        className={`relative z-10 w-full transition-opacity duration-700 ${
+      <section
+        className={`relative z-10 flex min-h-screen w-full flex-col items-center justify-center px-0 py-24 transition-opacity duration-[1800ms] ease-out ${
           ready ? "opacity-100" : "opacity-0"
         }`}
       >
-        <section className="w-full py-10">
+        <div
+          className={`mb-12 flex flex-col items-center px-6 text-center transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            ready
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+          style={{
+            transitionDelay: "250ms",
+          }}
+        >
+          <h1 className="text-5xl font-bold tracking-tight text-white md:text-8xl">
+            GALERIA
+          </h1>
+
+          <p className="mt-5 max-w-2xl text-white/60">
+            Registros visuais, atmosferas e fragmentos de identidade em
+            movimento.
+          </p>
+        </div>
+
+        <div
+          className={`w-full transition-all duration-[2600ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            ready
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+          style={{
+            transitionDelay: "500ms",
+          }}
+        >
           <div className="gallery-mask w-full overflow-hidden">
             <div className="gallery-scroll flex w-max gap-8 px-8 md:gap-10 md:px-10">
               {duplicatedPhotos.map((photo, index) => (
@@ -94,14 +123,23 @@ export default function Galeria() {
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        <div className="relative z-20 mt-10 flex justify-center">
+        <div
+          className={`relative z-20 mt-16 flex justify-center transition-all duration-[2200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+            ready
+              ? "translate-y-0 opacity-100"
+              : "translate-y-3 opacity-0"
+          }`}
+          style={{
+            transitionDelay: "850ms",
+          }}
+        >
           <Link
             href="/access"
             className="group inline-flex items-center gap-3 text-sm font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-300 hover:opacity-80 md:text-base"
           >
-            <span className="transition-transform duration-300 group-hover:-translate-x-2">
+            <span className="transition-transform duration-500 group-hover:-translate-x-2">
               ←
             </span>
 
@@ -109,8 +147,8 @@ export default function Galeria() {
           </Link>
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-black to-transparent" />
-      </div>
+        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-10 h-32 bg-gradient-to-t from-black to-transparent" />
+      </section>
 
       {!ready && <div className="fixed inset-0 z-50 bg-black" />}
     </main>

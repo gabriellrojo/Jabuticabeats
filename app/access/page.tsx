@@ -40,23 +40,34 @@ export default function AcessarPage() {
       />
 
       <section
-        className={`relative z-10 flex min-h-screen flex-col items-center justify-center gap-10 px-6 text-center transition-opacity duration-700 ${
+        className={`relative z-10 flex min-h-screen flex-col items-center justify-center gap-10 px-6 text-center transition-opacity duration-[1800ms] ease-out ${
           bgReady ? "opacity-100" : "opacity-0"
         }`}
       >
-        {links.map((item) => (
-          <Link
+        {links.map((item, index) => (
+          <div
             key={item.label}
-            href={item.href}
-            className="cursor-pointer"
+            className={`transition-all duration-[2200ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              bgReady
+                ? "translate-y-0 opacity-100"
+                : "translate-y-3 opacity-0"
+            }`}
+            style={{
+              transitionDelay: `${index * 220 + 300}ms`,
+            }}
           >
-            <TextRoll
-              center
-              className="text-3xl font-bold tracking-tight text-white md:text-5xl"
+            <Link
+              href={item.href}
+              className="cursor-pointer"
             >
-              {item.label}
-            </TextRoll>
-          </Link>
+              <TextRoll
+                center
+                className="text-3xl font-bold tracking-tight text-white md:text-5xl"
+              >
+                {item.label}
+              </TextRoll>
+            </Link>
+          </div>
         ))}
       </section>
 
