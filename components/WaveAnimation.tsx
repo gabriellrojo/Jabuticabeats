@@ -209,6 +209,8 @@ export function WaveAnimation({
     gridDistance,
   ])
 
+  const contentReady = imageReady || waveReady
+
   return (
     <div className="relative h-dvh w-screen overflow-hidden bg-black">
       <div
@@ -228,43 +230,41 @@ export function WaveAnimation({
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
           <div
-            className={`pointer-events-auto relative mb-2 h-[150px] w-[92vw] max-w-[1720px] transition-all duration-[1600ms] ease-[cubic-bezier(0.16,1,0.3,1)] md:h-[380px] md:w-[86vw] ${
-              imageReady || waveReady
+            className={`flex flex-col items-center transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+              contentReady
                 ? "translate-y-0 opacity-100"
-                : "translate-y-2 opacity-0"
+                : "translate-y-3 opacity-0"
             }`}
           >
-            <Image
-              src="/images/jabuticabeats-logo.png"
-              alt="Jabuticabeats"
-              fill
-              priority
-              sizes="(max-width: 768px) 92vw, 86vw"
-              className="object-contain"
-              onLoadingComplete={() => {
-                setTimeout(() => {
-                  requestAnimationFrame(() => {
-                    setImageReady(true)
-                  })
-                }, 100)
-              }}
-            />
+            <div className="pointer-events-auto relative mb-2 h-[150px] w-[92vw] max-w-[1720px] md:h-[380px] md:w-[86vw]">
+              <Image
+                src="/images/jabuticabeats-logo.png"
+                alt="Jabuticabeats"
+                fill
+                priority
+                sizes="(max-width: 768px) 92vw, 86vw"
+                className="object-contain"
+                onLoadingComplete={() => {
+                  setTimeout(() => {
+                    requestAnimationFrame(() => {
+                      setImageReady(true)
+                    })
+                  }, 100)
+                }}
+              />
+            </div>
+
+            <a
+              href="/access"
+              className="pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-500 hover:opacity-80 md:text-lg"
+            >
+              <span>acessar</span>
+
+              <span className="transition-transform duration-500 group-hover:translate-x-2">
+                →
+              </span>
+            </a>
           </div>
-
-          <a
-            href="/access"
-            className={`pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-all duration-[2400ms] delay-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:opacity-80 md:text-lg ${
-              imageReady || waveReady
-                ? "translate-y-0 opacity-100"
-                : "translate-y-2 opacity-0"
-            }`}
-          >
-            <span>acessar</span>
-
-            <span className="transition-transform duration-500 group-hover:translate-x-2">
-              →
-            </span>
-          </a>
         </div>
       </div>
 
