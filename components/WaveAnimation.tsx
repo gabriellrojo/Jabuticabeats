@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
 import * as THREE from "three"
 
@@ -30,7 +29,20 @@ export function WaveAnimation({
   const animationIdRef = useRef<number | null>(null)
 
   const [waveReady, setWaveReady] = useState(false)
-  const [imageReady, setImageReady] = useState(false)
+
+  useEffect(() => {
+    const preload = document.createElement("link")
+    preload.rel = "preload"
+    preload.as = "image"
+    preload.href = "/images/jabuticabeats-logo.png"
+    document.head.appendChild(preload)
+
+    return () => {
+      if (preload.parentNode) {
+        preload.parentNode.removeChild(preload)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (!canvasRef.current) return
@@ -44,9 +56,7 @@ export function WaveAnimation({
     try {
       const w = width || window.innerWidth
       const h = height || window.innerHeight
-
       const isMobile = window.innerWidth <= 768
-
       const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2)
 
       const fov = 60
@@ -72,7 +82,6 @@ export function WaveAnimation({
       camera.position.set(0, 0, 10)
 
       const scene = new THREE.Scene()
-
       geo = new THREE.BufferGeometry()
 
       const positions: number[] = []
@@ -139,9 +148,7 @@ export function WaveAnimation({
       function render() {
         if (!renderer) return
 
-        const time = clock.getElapsedTime()
-
-        mesh.material.uniforms.u_time.value = time
+        mesh.material.uniforms.u_time.value = clock.getElapsedTime()
         renderer.render(scene, camera)
 
         if (!firstFrameRendered) {
@@ -185,9 +192,7 @@ export function WaveAnimation({
       }
     } catch (error) {
       console.error("Erro ao iniciar WaveAnimation:", error)
-
       setWaveReady(true)
-      setImageReady(true)
 
       return () => {
         if (animationIdRef.current) {
@@ -209,15 +214,42 @@ export function WaveAnimation({
     gridDistance,
   ])
 
-  const contentReady = imageReady || waveReady
-
   return (
     <div className="relative h-dvh w-screen overflow-hidden bg-black">
-      <div
-        className={`transition-opacity duration-[1800ms] ease-out ${
-          waveReady ? "opacity-100" : "opacity-0"
-        }`}
-      >
+      <style jsx>{`
+        @keyframes logoZoomIn {
+          from {
+            transform: scale(0.72);
+          }
+
+          to {
+            transform: scale(1);
+          }
+        }
+
+        .logo-zoom-in {
+          animation: logoZoomIn 2200ms ease-out both;
+        }
+
+        @keyframes accessFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .access-fade-in {
+          opacity: 0;
+          animation: accessFadeIn 1400ms ease-out 2200ms forwards;
+        }
+      `}</style>
+
+      <div className="relative z-0">
         <div
           ref={canvasRef}
           className={className}
@@ -227,42 +259,36 @@ export function WaveAnimation({
             overflow: "hidden",
           }}
         />
+      </div>
 
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <div className="flex flex-col items-center">
-            <div className="pointer-events-auto relative mb-2 h-[150px] w-[92vw] max-w-[1720px] md:h-[380px] md:w-[86vw]">
-              <Image
-                src="/images/jabuticabeats-logo.png"
-                alt="Jabuticabeats"
-                fill
-                priority
-                sizes="(max-width: 768px) 92vw, 86vw"
-                className="object-contain"
-                onLoadingComplete={() => {
-                  setTimeout(() => {
-                    requestAnimationFrame(() => {
-                      setImageReady(true)
-                    })
-                  }, 100)
-                }}
-              />
-            </div>
-
-            <a
-              href="/access"
-              className="pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-500 hover:opacity-80 md:text-lg"
-            >
-              <span>acessar</span>
-
-              <span className="transition-transform duration-500 group-hover:translate-x-2">
-                →
-              </span>
-            </a>
+      <div className="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center">
+        <div className="flex flex-col items-center">
+          <div className="pointer-events-auto relative mb-2 h-[150px] w-[92vw] max-w-[1720px] md:h-[380px] md:w-[86vw]">
+            <img
+              src="/images/jabuticabeats-logo.png"
+              alt="Jabuticabeats"
+              className="logo-zoom-in h-full w-full object-contain"
+              draggable={false}
+              loading="eager"
+              decoding="sync"
+              fetchPriority="high"
+            />
           </div>
+
+          <a
+            href="/access"
+            className="access-fade-in pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-500 hover:opacity-80 md:text-lg"
+          >
+            <span>acessar</span>
+
+            <span className="transition-transform duration-500 group-hover:translate-x-2">
+              →
+            </span>
+          </a>
         </div>
       </div>
 
-      {!waveReady && <div className="absolute inset-0 z-50 bg-black" />}
+      {!waveReady && <div className="absolute inset-0 z-10 bg-black" />}
     </div>
   )
 }

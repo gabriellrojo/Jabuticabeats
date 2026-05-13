@@ -35,9 +35,11 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       antialias: true,
     })
 
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
     renderer.setSize(winWidth, winHeight)
     renderer.setClearColor(0x000000)
+
+    const clock = new THREE.Clock()
 
     const particleVertex = `
       attribute float scale;
@@ -47,10 +49,10 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
         vec3 p = position;
         float s = scale;
 
-        p.y += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
-        p.x += (sin(p.y + uTime) * 0.5);
+        p.y += (sin(p.x + uTime) * 0.5) + (cos(p.z + uTime) * 0.2);
+        p.x += sin(p.z + uTime) * 0.25;
 
-        s += (sin(p.x + uTime) * 0.5) + (cos(p.y + uTime) * 0.1) * 2.0;
+        s += (sin(p.x + uTime) * 0.5) + (cos(p.z + uTime) * 0.2);
 
         vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
 
@@ -63,7 +65,7 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       uniform vec3 uColor;
 
       void main() {
-        gl_FragColor = vec4(uColor, 0.65);
+        gl_FragColor = vec4(uColor, 1.0);
       }
     `
 
@@ -104,7 +106,6 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
     )
 
     const particleMaterial = new THREE.ShaderMaterial({
-      transparent: true,
       vertexShader: particleVertex,
       fragmentShader: particleFragment,
       uniforms: {
@@ -120,7 +121,7 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
     let animationId: number
 
     const animate = () => {
-      particleMaterial.uniforms.uTime.value += 0.05
+      particleMaterial.uniforms.uTime.value = clock.getElapsedTime() * 2.5
 
       camera.lookAt(scene.position)
       renderer.render(scene, camera)
