@@ -229,13 +229,7 @@ export function WaveAnimation({
         />
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
-          <div
-            className={`flex flex-col items-center transition-all duration-[2400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
-              contentReady
-                ? "translate-y-0 opacity-100"
-                : "translate-y-3 opacity-0"
-            }`}
-          >
+          <div className="flex flex-col items-center">
             <div className="pointer-events-auto relative mb-2 h-[150px] w-[92vw] max-w-[1720px] md:h-[380px] md:w-[86vw]">
               <Image
                 src="/images/jabuticabeats-logo.png"
