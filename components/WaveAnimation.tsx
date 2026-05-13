@@ -245,11 +245,6 @@ export function WaveAnimation({
             transform: translateY(0);
           }
         }
-
-        .access-fade-in {
-          opacity: 0;
-          animation: accessFadeIn 1400ms ease-out 2200ms forwards;
-        }
       `}</style>
 
       <div className="relative z-0">
@@ -280,7 +275,11 @@ export function WaveAnimation({
 
           <a
             href="/access"
-            className="access-fade-in pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-500 hover:opacity-80 md:text-lg"
+            className="pointer-events-auto group mt-6 inline-flex items-center gap-3 text-base font-medium uppercase tracking-[0.2em] text-white transition-opacity duration-500 hover:opacity-80 md:text-lg"
+            style={{
+              opacity: 0,
+              animation: "accessFadeIn 1400ms ease-out 2200ms forwards",
+            }}
           >
             <span>acessar</span>
 
