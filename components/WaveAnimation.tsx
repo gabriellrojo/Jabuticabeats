@@ -219,15 +219,18 @@ export function WaveAnimation({
       <style jsx>{`
         @keyframes logoZoomIn {
           from {
+            opacity: 0;
             transform: scale(0.72);
           }
 
           to {
+            opacity: 1;
             transform: scale(1);
           }
         }
 
         .logo-zoom-in {
+          opacity: 0;
           animation: logoZoomIn 2200ms ease-out both;
         }
 
@@ -288,7 +291,7 @@ export function WaveAnimation({
         </div>
       </div>
 
-      {!waveReady && <div className="absolute inset-0 z-10 bg-black" />}
+      {!waveReady && <div className="absolute inset-0 z-30 bg-black" />}
     </div>
   )
 }
