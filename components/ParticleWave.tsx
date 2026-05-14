@@ -10,18 +10,33 @@ interface ParticleWaveProps {
 
 export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const onReadyRef = useRef(onReady)
   const hasCalledReadyRef = useRef(false)
+
+  useEffect(() => {
+    onReadyRef.current = onReady
+  }, [onReady])
 
   useEffect(() => {
     if (!canvasRef.current) return
 
     const canvas = canvasRef.current
-    const winWidth = window.innerWidth
-    const winHeight = window.innerHeight
+    const isMobile = window.innerWidth <= 768
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: !isMobile,
+      alpha: false,
+      powerPreference: "high-performance",
+    })
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isMobile ? 1.4 : 2))
+    renderer.setSize(window.innerWidth, window.innerHeight, false)
+    renderer.setClearColor(0x000000, 1)
 
     const camera = new THREE.PerspectiveCamera(
       75,
-      winWidth / winHeight,
+      window.innerWidth / window.innerHeight,
       0.01,
       1000
     )
@@ -29,16 +44,6 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
     camera.position.set(0, 6, 5)
 
     const scene = new THREE.Scene()
-
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      antialias: true,
-    })
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
-    renderer.setSize(winWidth, winHeight)
-    renderer.setClearColor(0x000000)
-
     const clock = new THREE.Clock()
 
     const particleVertex = `
@@ -62,6 +67,7 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
     `
 
     const particleFragment = `
+      precision mediump float;
       uniform vec3 uColor;
 
       void main() {
@@ -69,9 +75,9 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       }
     `
 
-    const gap = 0.3
-    const amountX = 200
-    const amountY = 200
+    const gap = isMobile ? 0.42 : 0.3
+    const amountX = isMobile ? 120 : 180
+    const amountY = isMobile ? 120 : 180
     const particleNum = amountX * amountY
 
     const particlePositions = new Float32Array(particleNum * 3)
@@ -115,12 +121,14 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
     })
 
     const particles = new THREE.Points(particleGeometry, particleMaterial)
-
     scene.add(particles)
 
-    let animationId: number
+    let animationId = 0
+    let disposed = false
 
-    const animate = () => {
+    const renderFrame = () => {
+      if (disposed) return
+
       particleMaterial.uniforms.uTime.value = clock.getElapsedTime() * 2.5
 
       camera.lookAt(scene.position)
@@ -128,13 +136,17 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
 
       if (!hasCalledReadyRef.current) {
         hasCalledReadyRef.current = true
-        onReady?.()
+
+        requestAnimationFrame(() => {
+          onReadyRef.current?.()
+        })
       }
 
-      animationId = requestAnimationFrame(animate)
+      animationId = requestAnimationFrame(renderFrame)
     }
 
-    animate()
+    renderer.compile(scene, camera)
+    renderFrame()
 
     const handleResize = () => {
       const newWidth = window.innerWidth
@@ -143,14 +155,19 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       camera.aspect = newWidth / newHeight
       camera.updateProjectionMatrix()
 
-      renderer.setSize(newWidth, newHeight)
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio || 1, window.innerWidth <= 768 ? 1.4 : 2)
+      )
+
+      renderer.setSize(newWidth, newHeight, false)
     }
 
     window.addEventListener("resize", handleResize)
 
     return () => {
-      cancelAnimationFrame(animationId)
+      disposed = true
 
+      cancelAnimationFrame(animationId)
       window.removeEventListener("resize", handleResize)
 
       scene.remove(particles)
@@ -159,7 +176,7 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       particleMaterial.dispose()
       renderer.dispose()
     }
-  }, [onReady])
+  }, [])
 
   return (
     <canvas
@@ -167,9 +184,10 @@ export function ParticleWave({ className = "", onReady }: ParticleWaveProps) {
       className={`block ${className}`}
       style={{
         width: "100vw",
-        height: "100vh",
+        height: "100dvh",
         margin: 0,
         overflow: "hidden",
+        display: "block",
       }}
     />
   )

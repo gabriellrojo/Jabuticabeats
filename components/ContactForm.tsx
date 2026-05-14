@@ -75,12 +75,12 @@ export function ContactForm() {
   }
 
   return (
-    <div className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/5 p-6 text-left shadow-2xl backdrop-blur-md md:p-8">
+    <div className="w-full max-w-xl rounded-3xl border border-white bg-black p-6 text-left shadow-2xl backdrop-blur-md md:p-8">
       <Form onSubmit={handleSubmit} className="text-left">
         <div className="flex flex-col items-start gap-2 text-left">
           <label
             htmlFor="name"
-            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white/70"
+            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white"
           >
             Nome
           </label>
@@ -89,7 +89,7 @@ export function ContactForm() {
             id="name"
             name="name"
             placeholder="Seu nome"
-            className="h-12 w-full rounded-2xl border border-white/10 bg-black/40 px-4 text-left text-white outline-none transition placeholder:text-white/35 focus:border-purple-400"
+            className="h-12 w-full rounded-2xl border border-white bg-black px-4 text-left text-white outline-none transition placeholder:text-white focus:border-purple-400"
           />
 
           {errors.name && (
@@ -102,7 +102,7 @@ export function ContactForm() {
         <div className="flex flex-col items-start gap-2 text-left">
           <label
             htmlFor="phone"
-            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white/70"
+            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white"
           >
             Telefone
           </label>
@@ -117,7 +117,7 @@ export function ContactForm() {
               setPhone(formatPhone(event.target.value))
             }}
             placeholder="(11)111111111"
-            className="h-12 w-full rounded-2xl border border-white/10 bg-black/40 px-4 text-left text-white outline-none transition placeholder:text-white/35 focus:border-purple-400"
+            className="h-12 w-full rounded-2xl border border-white bg-black px-4 text-left text-white outline-none transition placeholder:text-white focus:border-purple-400"
           />
 
           {errors.phone && (
@@ -130,7 +130,7 @@ export function ContactForm() {
         <div className="flex flex-col items-start gap-2 text-left">
           <label
             htmlFor="email"
-            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white/70"
+            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white"
           >
             Email
           </label>
@@ -140,7 +140,7 @@ export function ContactForm() {
             name="email"
             type="email"
             placeholder="seu@email.com"
-            className="h-12 w-full rounded-2xl border border-white/10 bg-black/40 px-4 text-left text-white outline-none transition placeholder:text-white/35 focus:border-purple-400"
+            className="h-12 w-full rounded-2xl border border-white bg-black px-4 text-left text-white outline-none transition placeholder:text-white focus:border-purple-400"
           />
 
           {errors.email && (
@@ -153,7 +153,7 @@ export function ContactForm() {
         <div className="flex flex-col items-start gap-2 text-left">
           <label
             htmlFor="message"
-            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white/70"
+            className="w-full text-left text-sm font-medium uppercase tracking-[0.2em] text-white"
           >
             Mensagem
           </label>
@@ -162,7 +162,7 @@ export function ContactForm() {
             id="message"
             name="message"
             placeholder="Fale sobre seu projeto"
-            className="min-h-36 w-full resize-none rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-left text-white outline-none transition placeholder:text-white/35 focus:border-purple-400"
+            className="min-h-36 w-full resize-none rounded-2xl border border-white bg-black px-4 py-3 text-left text-white outline-none transition placeholder:text-white focus:border-purple-400"
           />
 
           {errors.message && (
@@ -173,14 +173,14 @@ export function ContactForm() {
         </div>
 
         {success && (
-          <span className="block w-full text-left text-sm text-white/70">
+          <span className="block w-full text-left text-sm text-white">
             Mensagem validada com sucesso.
           </span>
         )}
 
         <button
           type="submit"
-          className="cursor-pointer mt-2 inline-flex h-12 items-center justify-center rounded-2xl border border-purple-400/40 bg-purple-500/20 px-6 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:bg-purple-500/30"
+          className="mt-2 inline-flex h-12 cursor-pointer items-center justify-center rounded-2xl border border-purple-400 bg-purple-500 px-6 text-sm font-medium uppercase tracking-[0.2em] text-white transition hover:bg-purple-600"
         >
           Enviar
         </button>
